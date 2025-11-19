@@ -1,0 +1,17 @@
+[package]
+name = "z99natza"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+hyper = { version = "1", features = ["http1", "server"] }
+hyper-util = { version = "0.1.17", features = ["tokio", "server", "http1"] }
+tokio = { version = "1", features = ["full"] }
+http-body-util = "0.1"
+bytes = "1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+pretty_env_logger = "0.5"
+log = "0.4"
+thiserror = "2.0.17"
+chrono = "0.4"
