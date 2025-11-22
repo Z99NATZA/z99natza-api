@@ -5,12 +5,13 @@ use hyper::{Method, Request, Response};
 use bytes::Bytes;
 use hyper::body::Body;
 use crate::app::AppResult;
-use crate::handle::ai;
+use crate::handle::ai::chat::chatv1;
 use crate::http::with_cors;
 use serde_json::json;
+use std::fmt::Debug;
 
 pub async fn route(
-    req: Request<impl Body>
+    req: Request<impl Body + Debug>
 ) -> AppResult<Response<Full<Bytes>>> {
     let method = req.method();
     let uri = req.uri();
@@ -27,7 +28,7 @@ pub async fn route(
 
     let response = match (method, path) {
         (&Method::GET, "/api/") => home().await?,
-        (&Method::POST, "/api/ai/chatv1") => ai::chatv1().await?,
+        (&Method::POST, "/api/ai/chatv1") => chatv1(req).await?,
 
         _ => not_found().await?,
     };
