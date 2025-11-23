@@ -1,16 +1,24 @@
-use std::fmt::Debug;
 use bytes::Bytes;
 use http_body_util::Full;
 use hyper::Response;
-use hyper::Request as HyperRequest;
-use hyper::body::Body;
-
+use hyper::Request;
+use http_body_util::BodyExt;
+use hyper::body::Incoming;
+use serde::Deserialize;
 use crate::app::AppResult;
 
+#[derive(Debug, Deserialize)]
+struct ChatRequest {
+    message: String,
+}
+
 pub async fn chatv1(
-    req: HyperRequest<impl Body + Debug>
+    mut req: Request<Incoming>
 ) -> AppResult<Response<Full<Bytes>>> {
-    println!("{:#?}", req);
+    let full_body = req.body_mut().collect().await?.to_bytes();
+    
+    let chat_req: ChatRequest = serde_json::from_slice(&full_body)?;
+    println!("{:#?}", chat_req);
     
     #[derive(serde::Serialize)]
     struct ChatMessage {
@@ -21,7 +29,7 @@ pub async fn chatv1(
 
     let messages = vec![
         ChatMessage {
-            message: "Hello".to_string(),
+            message: chat_req.message,
             sender: "user".to_string(),
             timestamp: chrono::Utc::now().to_rfc3339(),
         },

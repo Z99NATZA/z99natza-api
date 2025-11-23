@@ -3,15 +3,14 @@
 use http_body_util::Full;
 use hyper::{Method, Request, Response};
 use bytes::Bytes;
-use hyper::body::Body;
+use hyper::body::{Incoming};
 use crate::app::AppResult;
 use crate::handle::ai::chat::chatv1;
 use crate::http::with_cors;
 use serde_json::json;
-use std::fmt::Debug;
 
 pub async fn route(
-    req: Request<impl Body + Debug>
+    req: Request<Incoming>
 ) -> AppResult<Response<Full<Bytes>>> {
     let method = req.method();
     let uri = req.uri();
@@ -36,7 +35,7 @@ pub async fn route(
     Ok(with_cors(response))
 }
 
-// ชั่วคราว
+// temporary
 pub async fn home() -> AppResult<Response<Full<Bytes>>> {
     let body = json!({
         "status": "ok",

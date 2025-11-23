@@ -28,6 +28,9 @@ pub enum AppError {
         
     #[error("Body error: {0}")]
     BodyError(String),
+    
+    #[error("Hyper error: {0}")]
+    HyperError(#[from] hyper::Error),
 }
 
 impl From<Infallible> for AppError {
