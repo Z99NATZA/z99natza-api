@@ -2,10 +2,12 @@ use bytes::Bytes;
 use http_body_util::Full;
 use hyper::Response;
 use hyper::Request;
-use http_body_util::BodyExt;
+use hyper::StatusCode;
 use hyper::body::Incoming;
 use serde::Deserialize;
 use crate::app::AppResult;
+use crate::http::ToResponse;
+use crate::http::request::FullBody;
 
 #[derive(Debug, Deserialize)]
 struct ChatRequest {
@@ -13,12 +15,11 @@ struct ChatRequest {
 }
 
 pub async fn chatv1(
-    mut req: Request<Incoming>
+    req: Request<Incoming>
 ) -> AppResult<Response<Full<Bytes>>> {
-    let full_body = req.body_mut().collect().await?.to_bytes();
+    let full_body = FullBody::new(req).await?;
     
     let chat_req: ChatRequest = serde_json::from_slice(&full_body)?;
-    println!("{:#?}", chat_req);
     
     #[derive(serde::Serialize)]
     struct ChatMessage {
@@ -39,12 +40,10 @@ pub async fn chatv1(
             timestamp: chrono::Utc::now().to_rfc3339(),
         },
     ];
+    
     let body = serde_json::to_vec(&messages)?;
 
-    let resp = Response::builder()
-        .status(200)
-        .header("content-type", "application/json; charset=utf-8")
-        .body(Full::new(Bytes::from(body)))?;
+    let resp = ToResponse::new(StatusCode::OK, body)?;
 
     Ok(resp)
 }
