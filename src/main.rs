@@ -2,6 +2,7 @@ mod handle;
 mod routes;
 mod app;
 mod http;
+mod ai;
 
 use std::net::SocketAddr;
 
