@@ -1,9 +1,9 @@
-use std::net::SocketAddr;
+use std::{net::SocketAddr, sync::Arc};
 
 use hyper_util::rt::{TokioIo, TokioTimer};
 use tokio::net::TcpListener;
 use hyper::{server::conn::http1, service::service_fn};
-use crate::routes::api;
+use crate::{app::state::AppState, routes::api};
 
 
 pub struct Server;
@@ -15,15 +15,24 @@ impl Server {
         println!("App running on: {}", addr);
         println!("-----------------------------------------\n");
     
+        let state = Arc::new(AppState::new());
+        
         loop {
             let (tcp, _) = listener.accept().await?;
     
             let io = TokioIo::new(tcp);
+            
+            let st = state.clone();
     
             tokio::task::spawn(async move {
+                let svc = service_fn(move |req| {
+                    let state = st.clone();
+                    api::route(req, state)
+                });
+                
                 if let Err(err) = http1::Builder::new()
                     .timer(TokioTimer::new())
-                    .serve_connection(io, service_fn(api::route))
+                    .serve_connection(io, svc)
                     .await
                 {
                     println!("Error serving connection: {:?}", err);

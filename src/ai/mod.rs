@@ -1,5 +1,5 @@
 pub mod openai;
 pub mod provider;
+pub mod chat;
 
-pub use openai::chat::OpenAiChat;
-pub use provider::AiProvider;
+pub use chat::AiChat;

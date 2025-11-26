@@ -1,13 +1,30 @@
-use crate::{ai::OpenAiChat, app::AppResult};
+use std::sync::Arc;
 
-pub enum AiProvider {
+use crate::ai::{AiChat};
+use crate::ai::openai::OpenAiChat;
+use crate::app::AppResult;
+
+pub enum AiProviderKind {
     OpenAI,
+}
+
+pub struct AiProvider {
+    inner: Arc<dyn AiChat>,
+}
+
+impl AiProviderKind {
+    pub fn build(self) -> AiProvider {
+        match self {
+            AiProviderKind::OpenAI => {
+                let client = OpenAiChat::new();
+                AiProvider { inner: Arc::new(client) }
+            }
+        }
+    }
 }
 
 impl AiProvider {
     pub async fn chat(&self, message: &str) -> AppResult<String> {
-        match self {
-            AiProvider::OpenAI => OpenAiChat::chat(message).await,
-        }
+        self.inner.chat(message).await
     }
 }

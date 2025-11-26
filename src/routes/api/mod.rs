@@ -1,16 +1,20 @@
 #![allow(dead_code)]
 
+use std::sync::Arc;
+
 use http_body_util::Full;
 use hyper::{Method, Request, Response};
 use bytes::Bytes;
 use hyper::body::{Incoming};
 use crate::app::AppResult;
+use crate::app::state::AppState;
 use crate::handle::ai::chat::chatv1;
 use crate::http::with_cors;
 use serde_json::json;
 
 pub async fn route(
-    req: Request<Incoming>
+    req: Request<Incoming>,
+    state: Arc<AppState>
 ) -> AppResult<Response<Full<Bytes>>> {
     let method = req.method();
     let uri = req.uri();
@@ -27,7 +31,7 @@ pub async fn route(
 
     let response = match (method, path) {
         (&Method::GET, "/api/") => home().await?,
-        (&Method::POST, "/api/ai/chatv1") => chatv1(req).await?,
+        (&Method::POST, "/api/ai/chatv1") => chatv1(state, req).await?,
 
         _ => not_found().await?,
     };
