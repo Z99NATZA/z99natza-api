@@ -5,7 +5,6 @@ use tokio::net::TcpListener;
 use hyper::{server::conn::http1, service::service_fn};
 use crate::{app::state::AppState, routes::api};
 
-
 pub struct Server;
 
 impl Server {

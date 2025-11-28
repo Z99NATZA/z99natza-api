@@ -18,7 +18,7 @@ struct ChatRequest {
     sender: String,
 }
 
-pub async fn chatv1(
+pub async fn chat_handle(
     state: Arc<AppState>,
     req: Request<Incoming>
 ) -> AppResult<Response<Full<Bytes>>> {

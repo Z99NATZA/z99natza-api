@@ -7,13 +7,8 @@ pub struct AppState {
 
 impl AppState {
     pub fn new() -> Self {
-        let kind = match env::var("AI_PROVIDER").as_deref() {
-            Ok("openai") => AiProviderKind::OpenAI,
-            _ => AiProviderKind::OpenAI,
-        };
-
         Self {
-            ai: kind.build(),
+            ai: AiProviderKind::from_env().build(),
         }
     }
 }
