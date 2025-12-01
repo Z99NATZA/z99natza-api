@@ -25,8 +25,9 @@ pub async fn chat_handle(
     let full_body = FullBody::new(req).await?;
     
     let chat_req: ChatRequest = serde_json::from_slice(&full_body)?;
+    let input = chat_req.message.as_str();
     
-    let ai_message = state.ai.chat(chat_req.message.as_str()).await?;
+    let ai_message = state.ai.chat(input).await?;
 
     #[derive(serde::Serialize)]
     struct ChatMessage {

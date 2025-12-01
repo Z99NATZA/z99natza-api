@@ -3,4 +3,3 @@ pub struct OpenAiConfig {
     pub model: String,
     pub base_url: String,
 }
-

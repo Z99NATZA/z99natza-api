@@ -1,14 +1,15 @@
-use crate::ai::provider::{AiProvider, AiProviderKind};
 use std::env;
 
+use crate::ai::provider::{AiProvider, ai_type::AiType};
+
 pub struct AppState {
-    pub ai: AiProvider,
+    pub ai: AiProvider
 }
 
 impl AppState {
     pub fn new() -> Self {
-        Self {
-            ai: AiProviderKind::from_env().build(),
-        }
+        Self { ai: AiType::config().build() }
     }
 }
+
+
