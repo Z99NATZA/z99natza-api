@@ -10,7 +10,7 @@ use serde::Deserialize;
 use crate::app::AppResult;
 use crate::app::state::AppState;
 use crate::http::ToResponse;
-use crate::http::request::FullBody;
+use crate::http::request::json;
 
 #[derive(Debug, Deserialize)]
 struct ChatRequest {
@@ -22,10 +22,9 @@ pub async fn chat_handle(
     state: Arc<AppState>,
     req: Request<Incoming>
 ) -> AppResult<Response<Full<Bytes>>> {
-    let full_body = FullBody::new(req).await?;
-    
-    let chat_req: ChatRequest = serde_json::from_slice(&full_body)?;
+    let chat_req: ChatRequest = json(req).await?;
     let input = chat_req.message.as_str();
+    println!("{:?}", chat_req);
     
     let ai_message = state.ai.chat(input).await?;
 
