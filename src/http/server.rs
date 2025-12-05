@@ -34,7 +34,12 @@ impl Server {
                     .serve_connection(io, svc)
                     .await
                 {
-                    println!("Error serving connection: {:?}", err);
+                    if err.is_timeout() {
+                        // 
+                    }
+                    else {
+                        println!("Error serving connection: {:?}", err);
+                    }
                 }
             });
         }
