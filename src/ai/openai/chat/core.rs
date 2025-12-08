@@ -19,6 +19,8 @@ impl AiChat for OpenAiChat {
         let url = self.config.base_url.clone();
         let api_key = self.config.api_key.clone();
         let model = self.config.model.clone();
+        
+        println!("{}", message);
     
         let res = client
             .post(&url)
@@ -26,6 +28,10 @@ impl AiChat for OpenAiChat {
             .json(&serde_json::json!({
                 "model": model,
                 "messages": [
+                    {
+                        "role": "system",
+                        "content": "ตอบต่อเนื่องจากประวัติสนทนาล่าสุด (ตอบเป็นข้อความธรรมดา ไม่ต้องเรียนแบบประวัติสนทนา) ตอบสั้นเข้าใจง่าย, คุณเป็นผู้หญิง, อย่างแสดงตัวว่าเป็น AI, ตามน้ำผู้ใช้งาน, เล่นมุขบางครั้ง, ให้อารมณ์เหมือนอยู่ด้วยกัน, สไตล์สาวอนิเมะ ไวฟุ"
+                    },
                     {
                         "role": "user",
                         "content": message
