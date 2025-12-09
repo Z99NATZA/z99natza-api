@@ -1,5 +1,5 @@
 use std::{env, sync::Arc};
-use crate::{ai::{OpenAiConfig, openai::chat::core::OpenAiChat, provider::AiProvider}};
+use crate::{ai::{OpenAiConfig, openai::chat::OpenAiChat, provider::AiProvider}};
 
 pub enum AiType {
     OpenAi(OpenAiConfig),
