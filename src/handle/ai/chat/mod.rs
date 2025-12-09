@@ -1,13 +1,16 @@
-use std::sync::Arc;
+pub mod dto;
+pub use dto::ChatRequest;
+pub use dto::Chat;
+pub use dto::ChatMessage;
 
+use std::sync::Arc;
 use bytes::Bytes;
 use http_body_util::Full;
 use hyper::Response;
 use hyper::Request;
 use hyper::StatusCode;
 use hyper::body::Incoming;
-use serde::Deserialize;
-use serde::Serialize;
+
 use crate::app::AppResult;
 use crate::app::state::AppState;
 use crate::http::ToResponse;
@@ -15,32 +18,21 @@ use crate::http::request;
 use tokio::fs;
 use std::path::Path;
 
-#[derive(Debug, Deserialize)]
-struct ChatRequest {
-    message: String,
-    sender: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct Chat {
-    sender: String,
-    message: String,
-}
-
 pub async fn chat_handle(
     state: Arc<AppState>,
     req: Request<Incoming>
 ) -> AppResult<Response<Full<Bytes>>> {
-    let session_id = "ddd31a130".to_string();
-    
     let chat_req: ChatRequest = request::json(req).await?;
+    
+    // chat_id
+    let chat_id = chat_req.chat_id.clone();
     
     let chat_data = Chat {
         sender: chat_req.sender.clone(),
         message: chat_req.message.clone(),
     };
     
-    let json_file_name = format!("chat_{}.json", session_id);
+    let json_file_name = format!("chat_{}.json", chat_id);
     let json_path = format!("data/chat_history/{}", json_file_name);
     
     // pull chat history
@@ -52,6 +44,7 @@ pub async fn chat_handle(
         Vec::new()
     };
     
+    // add current user message
     history.push(chat_data);
     
     let mut context = String::new();
@@ -61,6 +54,7 @@ pub async fn chat_handle(
         context = format!("{} {}: {}\n", context, h.sender, h.message);
     }
     
+    // call ai
     let ai_message = state.ai.chat(context.as_str()).await?;
     
     let chat_data = Chat {
@@ -68,17 +62,11 @@ pub async fn chat_handle(
         message: ai_message.clone(),
     };
     
+    // add current ai reply
     history.push(chat_data);
     
     let json = serde_json::to_string_pretty(&history)?;
     tokio::fs::write(&json_path, json).await?;
-
-    #[derive(serde::Serialize)]
-    struct ChatMessage {
-        message: String,
-        sender: String,
-        timestamp: String,
-    }
 
     let messages = vec![
         ChatMessage {
