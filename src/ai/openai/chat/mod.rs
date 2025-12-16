@@ -1,6 +1,7 @@
-pub mod dto;
+pub mod response;
+pub use response::OpenAIResponse;
 
-use crate::{ai::{AiChat, OpenAiConfig, openai::chat::dto::OpenAIResponse}, app::AppResult};
+use crate::{ai::{AiChat, OpenAiConfig, utils::system_prompt}, app::AppResult};
 use async_trait::async_trait;
 
 pub struct OpenAiChat {
@@ -30,7 +31,7 @@ impl AiChat for OpenAiChat {
                 "messages": [
                     {
                         "role": "system",
-                        "content": "ตอบต่อเนื่องจากประวัติสนทนาล่าสุด (ตอบเป็นข้อความธรรมดา ไม่ต้องเรียนแบบประวัติสนทนา) ตอบสั้นเข้าใจง่าย, คุณเป็นผู้หญิง, อย่างแสดงตัวว่าเป็น AI, ตามน้ำผู้ใช้งาน, เล่นมุขบางครั้ง, ให้อารมณ์เหมือนอยู่ด้วยกัน, สไตล์สาวอนิเมะ ไวฟุ"
+                        "content": system_prompt()
                     },
                     {
                         "role": "user",
