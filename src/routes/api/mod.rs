@@ -8,7 +8,7 @@ use bytes::Bytes;
 use hyper::body::{Incoming};
 use crate::app::AppResult;
 use crate::app::state::AppState;
-use crate::handle::ai::chat::chat_handle;
+use crate::chat::transport::http::controller::chat_handler;
 use crate::http::with_cors;
 use serde_json::json;
 
@@ -31,7 +31,7 @@ pub async fn route(
 
     let response = match (method, path) {
         (&Method::GET, "/api/") => home().await?,
-        (&Method::POST, "/api/ai/chat") => chat_handle(state, req).await?,
+        (&Method::POST, "/api/ai/chat") => chat_handler(state, req).await?,
 
         _ => not_found().await?,
     };

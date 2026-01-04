@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use crate::app::AppResult;
-use crate::chat::ai::client::ai_client::AiClient;
-use crate::chat::usecase::handle_chat::ChatAi;
+use crate::chat::ai::chat::ChatAi;
+use crate::chat::ai::client::client::AiClient;
 
 pub struct AiManager {
     client: Arc<dyn AiClient>,

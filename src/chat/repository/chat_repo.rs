@@ -17,13 +17,16 @@ impl ChatRepository for JsonChatRepository {
 
         let content = tokio::fs::read_to_string(&path).await?;
         let history = serde_json::from_str(&content)?;
+        
         Ok(history)
     }
 
     async fn save(&self, chat_id: &str, history: &[Chat]) -> AppResult<()> {
         let path = self.path(chat_id);
         let json = serde_json::to_string_pretty(history)?;
+        
         tokio::fs::write(path, json).await?;
+        
         Ok(())
     }
 }

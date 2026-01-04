@@ -3,7 +3,7 @@ use std::{net::SocketAddr, sync::Arc};
 use hyper_util::rt::{TokioIo, TokioTimer};
 use tokio::net::TcpListener;
 use hyper::{server::conn::http1, service::service_fn};
-use crate::{app::state::AppState, routes::api};
+use crate::{app::bootstrap::bootstrap, routes::api};
 
 pub struct Server;
 
@@ -14,7 +14,7 @@ impl Server {
         println!("App running on: {}", addr);
         println!("-----------------------------------------\n");
     
-        let state = Arc::new(AppState::new());
+        let state = Arc::new(bootstrap());
         
         loop {
             let (tcp, _) = listener.accept().await?;

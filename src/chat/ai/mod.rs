@@ -1,2 +1,3 @@
-pub mod ai_manager;
+pub mod manager;
 pub mod client;
+pub mod chat;
