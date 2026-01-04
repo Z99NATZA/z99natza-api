@@ -4,6 +4,7 @@ use serde_json::json;
 
 use crate::app::AppResult;
 use crate::chat::ai::client::client::AiClient;
+use crate::chat::prompt::system_prompt::system_prompt;
 
 pub struct OpenAiClient {
     http: Client,
@@ -24,6 +25,8 @@ impl OpenAiClient {
 #[async_trait]
 impl AiClient for OpenAiClient {
     async fn chat(&self, prompt: &str) -> AppResult<String> {
+        let system_prompt = system_prompt();
+        
         let resp = self
             .http
             .post("https://api.openai.com/v1/chat/completions")
@@ -31,6 +34,7 @@ impl AiClient for OpenAiClient {
             .json(&json!({
                 "model": self.model,
                 "messages": [
+                    { "role": "assistant", "content": system_prompt },
                     { "role": "user", "content": prompt }
                 ]
             }))

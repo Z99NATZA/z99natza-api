@@ -13,7 +13,6 @@ pub async fn chat_handler(
     state: Arc<AppState>,
     req: Request<Incoming>
 ) -> AppResult<Response<Full<Bytes>>> {
-    println!("{:#?}", req);
     let chat_req: ChatRequest = request::json(req).await?;
     let messages = state.handle_chat.execute(chat_req).await?;
 
