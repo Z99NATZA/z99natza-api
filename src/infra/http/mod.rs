@@ -1,8 +1,7 @@
 pub mod server;
 pub mod cors;
-pub mod response;
 pub mod request;
+pub mod response;
 
 pub use server::Server;
 pub use cors::with_cors;
-pub use response::to_response::ToResponse;

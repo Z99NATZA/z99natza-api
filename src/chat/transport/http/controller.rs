@@ -6,8 +6,8 @@ use hyper::{Request, Response, StatusCode, body::Incoming};
 
 use crate::app::{AppResult, state::AppState};
 use crate::chat::usecase::dto::chat_request::ChatRequest;
-use crate::http::request;
-use super::response::json_response;
+use crate::infra::http::request;
+use crate::infra::http::response::json_response;
 
 pub async fn chat_handler(
     state: Arc<AppState>,
