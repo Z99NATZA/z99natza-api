@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use crate::app::AppResult;
-use crate::chat::ai::chat::ChatAi;
+use crate::chat::ai::chat_ai::ChatAi;
 use crate::chat::domain::chat::Chat;
 use crate::chat::prompt::context_builder::build_context;
 use crate::chat::repository::chat_repo::ChatRepository;
@@ -14,6 +14,13 @@ pub struct HandleChat {
 }
 
 impl HandleChat {
+    pub fn new(
+        repo: Arc<dyn ChatRepository>,
+        ai: Arc<dyn ChatAi>,
+    ) -> Self {
+        Self { repo, ai }
+    }
+    
     pub async fn execute(&self, req: ChatRequest) -> AppResult<Vec<ChatMessage>> {
         let mut history = self.repo.load(&req.chat_id).await?;
 
@@ -37,12 +44,5 @@ impl HandleChat {
             ChatMessage::user(req),
             ChatMessage::ai(ai_reply),
         ])
-    }
-    
-    pub fn new(
-        repo: Arc<dyn ChatRepository>,
-        ai: Arc<dyn ChatAi>,
-    ) -> Self {
-        Self { repo, ai }
     }
 }

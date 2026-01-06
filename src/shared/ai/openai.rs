@@ -3,7 +3,7 @@ use reqwest::Client;
 use serde_json::json;
 
 use crate::app::AppResult;
-use crate::chat::ai::client::client::AiClient;
+use super::client::AiClient;
 use crate::chat::prompt::system_prompt::system_prompt;
 
 pub struct OpenAiClient {

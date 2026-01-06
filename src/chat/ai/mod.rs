@@ -1,3 +1,2 @@
-pub mod manager;
-pub mod client;
-pub mod chat;
+pub mod chat_ai;
+pub mod chat_ai_impl;

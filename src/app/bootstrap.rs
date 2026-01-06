@@ -1,16 +1,11 @@
 use std::{env, sync::Arc};
 
-use crate::{
-    app::state::AppState,
-    chat::{
-        ai::{
-            manager::AiManager,
-            client::openai::OpenAiClient,
-        },
-        repository::json_file_repo::JsonChatRepository,
-        usecase::handle_chat::HandleChat,
-    },
-};
+use crate::app::state::AppState;
+use crate::chat::ai::chat_ai_impl::ChatAiImpl;
+use crate::chat::repository::json_file_repo::JsonChatRepository;
+use crate::chat::usecase::handle_chat::HandleChat;
+use crate::shared::ai::manager::AiManager;
+use crate::shared::ai::openai::OpenAiClient;
 
 pub fn bootstrap() -> AppState {
     // ---- infra ----
@@ -20,11 +15,14 @@ pub fn bootstrap() -> AppState {
         env::var("OPENAI_API_KEY").expect("OPENAI_API_KEY missing"),
         env::var("OPENAI_MODEL").unwrap_or("gpt-4o-mini".into()),
     ));
+    
+    let ai_manager = Arc::new(AiManager::new(ai_client));
 
-    let ai = Arc::new(AiManager::new(ai_client));
+    // ---- chat adapter ----
+    let chat_ai = Arc::new(ChatAiImpl::new(ai_manager));
 
     // ---- usecase ----
-    let handle_chat = Arc::new(HandleChat::new(repo, ai));
+    let handle_chat = Arc::new(HandleChat::new(repo, chat_ai));
 
     AppState {
         handle_chat,
