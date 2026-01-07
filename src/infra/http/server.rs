@@ -2,19 +2,22 @@ use std::{net::SocketAddr, sync::Arc};
 
 use hyper_util::rt::{TokioIo, TokioTimer};
 use tokio::net::TcpListener;
-use hyper::{server::conn::http1, service::service_fn};
-use crate::{app::bootstrap::bootstrap, routes::api};
+use hyper::server::conn::http1;
+use hyper::service::service_fn;
+use crate::app::state::AppState;
+use crate::routes::api;
 
 pub struct Server;
 
 impl Server {
-    pub async fn run(addr: SocketAddr) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    pub async fn run(
+        addr: SocketAddr,
+        state: Arc<AppState>,
+    ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let listener = TcpListener::bind(addr).await?;
         println!("\n-----------------------------------------");
         println!("App running on: {}", addr);
         println!("-----------------------------------------\n");
-    
-        let state = Arc::new(bootstrap());
         
         loop {
             let (tcp, _) = listener.accept().await?;

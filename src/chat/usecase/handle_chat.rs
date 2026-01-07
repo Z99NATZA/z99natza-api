@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use crate::app::AppResult;
-use crate::chat::ai::chat_ai::ChatAi;
+use crate::chat::ai::port::chat_ai::ChatAi;
 use crate::chat::domain::chat::Chat;
 use crate::chat::prompt::context_builder::build_context;
 use crate::chat::repository::chat_repo::ChatRepository;

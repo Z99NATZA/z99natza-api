@@ -1,11 +1,11 @@
 use std::{env, sync::Arc};
 
 use crate::app::state::AppState;
-use crate::chat::ai::chat_ai_impl::ChatAiImpl;
 use crate::chat::repository::json_file_repo::JsonChatRepository;
 use crate::chat::usecase::handle_chat::HandleChat;
-use crate::shared::ai::manager::AiManager;
-use crate::shared::ai::openai::OpenAiClient;
+use crate::infra::ai::chat_ai_impl::ChatAiImpl;
+use crate::infra::ai::manager::AiManager;
+use crate::infra::ai::openai::OpenAiClient;
 
 pub fn bootstrap() -> AppState {
     // ---- infra ----

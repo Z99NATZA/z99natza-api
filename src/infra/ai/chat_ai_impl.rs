@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use crate::app::AppResult;
-use crate::chat::ai::chat_ai::ChatAi;
-use crate::shared::ai::manager::AiManager;
+use crate::chat::ai::port::chat_ai::ChatAi;
+use crate::infra::ai::manager::AiManager;
 
 pub struct ChatAiImpl {
     manager: Arc<AiManager>,
