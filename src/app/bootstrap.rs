@@ -1,8 +1,8 @@
 use std::{env, sync::Arc};
 
 use crate::app::state::AppState;
-use crate::chat::repository::json_file_repo::JsonChatRepository;
-use crate::chat::usecase::handle_chat::HandleChat;
+use crate::modules::chat::repository::json_file_repo::JsonChatRepository;
+use crate::modules::chat::usecase::handle_chat::HandleChat;
 use crate::infra::ai::chat_ai_impl::ChatAiImpl;
 use crate::infra::ai::manager::AiManager;
 use crate::infra::ai::openai::OpenAiClient;

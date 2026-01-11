@@ -1,7 +1,8 @@
 use chrono::Utc;
 use serde::Serialize;
 
-use crate::chat::usecase::dto::chat_request::ChatRequest;
+use crate::modules::chat::usecase::dto::chat_request::ChatRequest;
+
 
 #[derive(Debug, Serialize)]
 pub struct ChatMessage {

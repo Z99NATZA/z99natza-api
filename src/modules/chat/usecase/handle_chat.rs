@@ -1,12 +1,12 @@
 use std::sync::Arc;
 
-use crate::app::AppResult;
-use crate::chat::ai::port::chat_ai::ChatAi;
-use crate::chat::domain::chat::Chat;
-use crate::chat::prompt::context_builder::build_context;
-use crate::chat::repository::chat_repo::ChatRepository;
-use crate::chat::usecase::dto::chat_message::ChatMessage;
-use crate::chat::usecase::dto::chat_request::ChatRequest;
+use crate::modules::chat::ai::port::chat_ai::ChatAi;
+use crate::modules::chat::domain::ChatRepository;
+use crate::modules::chat::domain::Chat;
+use crate::modules::chat::domain::error::ChatError;
+use crate::modules::chat::prompt::context_builder::build_context;
+use crate::modules::chat::usecase::dto::chat_message::ChatMessage;
+use crate::modules::chat::usecase::dto::chat_request::ChatRequest;
 
 pub struct HandleChat {
     repo: Arc<dyn ChatRepository>,
@@ -21,7 +21,7 @@ impl HandleChat {
         Self { repo, ai }
     }
     
-    pub async fn execute(&self, req: ChatRequest) -> AppResult<Vec<ChatMessage>> {
+    pub async fn execute(&self, req: ChatRequest) -> Result<Vec<ChatMessage>, ChatError> {
         let mut history = self.repo.load(&req.chat_id).await?;
 
         history.push(Chat {
@@ -31,7 +31,8 @@ impl HandleChat {
 
         let context = build_context(&history);
 
-        let ai_reply = self.ai.chat(&context).await?;
+        let ai_reply = self.ai.chat(&context).await
+            .map_err(|_| ChatError::PersistenceFailure)?;
 
         history.push(Chat {
             sender: "assistant".into(),

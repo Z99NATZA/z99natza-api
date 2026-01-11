@@ -4,7 +4,7 @@ use serde_json::json;
 
 use crate::app::AppResult;
 use super::client::AiClient;
-use crate::chat::prompt::system_prompt::system_prompt;
+use crate::modules::chat::prompt::system_prompt::system_prompt;
 
 pub struct OpenAiClient {
     http: Client,

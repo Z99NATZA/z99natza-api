@@ -1,4 +1,4 @@
-use crate::chat::domain::chat::Chat;
+use crate::modules::chat::domain::chat::Chat;
 
 pub fn build_context(history: &[Chat]) -> String {
     history
