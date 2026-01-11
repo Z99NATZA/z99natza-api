@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::modules::chat::domain::value::ChatId;
+use crate::modules::ai_chat::domain::value::ChatId;
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]

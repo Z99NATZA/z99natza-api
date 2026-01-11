@@ -8,14 +8,18 @@ use crate::app::AppError;
 use crate::app::state::AppState;
 use crate::infra::http::request;
 use crate::infra::http::response::json_response;
-use crate::modules::chat::usecase::dto::chat_request::ChatRequest;
+use crate::modules::ai_chat::usecase::dto::ChatRequest;
+use crate::modules::ai_chat;
 
 pub async fn chat_handler(
-    state: Arc<AppState>,
+    _state: Arc<AppState>,
     req: Request<Incoming>
 ) -> Result<Response<Full<Bytes>>, AppError> {
+    let ai_chat = Arc::new(ai_chat::bootstrap());
+    
     let chat_req: ChatRequest = request::json(req).await?;
-    let messages = state.handle_chat.execute(chat_req).await
+    
+    let messages = ai_chat.execute(chat_req).await
         .map_err(|_| AppError::GenericError)?;
 
     json_response(StatusCode::OK, &messages)

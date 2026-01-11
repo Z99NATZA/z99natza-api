@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use crate::app::AppResult;
-use crate::modules::chat::ai::port::chat_ai::ChatAi;
+use crate::modules::ai_chat::ai::port::chat_ai::ChatAi;
 use crate::infra::ai::manager::AiManager;
 
 pub struct ChatAiImpl {

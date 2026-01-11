@@ -1,13 +1,13 @@
-use std::{env, sync::Arc};
+use std::env;
+use std::sync::Arc;
 
-use crate::app::state::AppState;
 use crate::modules::ai_chat::repository::json_file_repo::JsonChatRepository;
 use crate::modules::ai_chat::usecase::handle_chat::HandleChat;
 use crate::infra::ai::chat_ai_impl::ChatAiImpl;
 use crate::infra::ai::manager::AiManager;
 use crate::infra::ai::openai::OpenAiClient;
 
-pub fn bootstrap() -> AppState {
+pub fn bootstrap() -> Arc<HandleChat> {
     // ---- infra ----
     let repo = Arc::new(JsonChatRepository::new("data/chat_history"));
 
@@ -24,7 +24,5 @@ pub fn bootstrap() -> AppState {
     // ---- usecase ----
     let handle_chat = Arc::new(HandleChat::new(repo, chat_ai));
 
-    AppState {
-        handle_chat,
-    }
+    handle_chat
 }

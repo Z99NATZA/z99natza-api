@@ -1,12 +1,12 @@
 use std::sync::Arc;
 
-use crate::modules::chat::ai::port::chat_ai::ChatAi;
-use crate::modules::chat::domain::ChatRepository;
-use crate::modules::chat::domain::Chat;
-use crate::modules::chat::domain::error::ChatError;
-use crate::modules::chat::prompt::context_builder::build_context;
-use crate::modules::chat::usecase::dto::chat_message::ChatMessage;
-use crate::modules::chat::usecase::dto::chat_request::ChatRequest;
+use crate::modules::ai_chat::ai::port::chat_ai::ChatAi;
+use crate::modules::ai_chat::domain::ChatRepository;
+use crate::modules::ai_chat::domain::Chat;
+use crate::modules::ai_chat::domain::error::ChatError;
+use crate::modules::ai_chat::prompt::context_builder::build_context;
+use crate::modules::ai_chat::usecase::dto::chat_message::ChatMessage;
+use crate::modules::ai_chat::usecase::dto::chat_request::ChatRequest;
 
 pub struct HandleChat {
     repo: Arc<dyn ChatRepository>,

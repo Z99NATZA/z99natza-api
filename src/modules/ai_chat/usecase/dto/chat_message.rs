@@ -1,7 +1,7 @@
 use chrono::Utc;
 use serde::Serialize;
 
-use crate::modules::chat::usecase::dto::chat_request::ChatRequest;
+use crate::modules::ai_chat::usecase::dto::chat_request::ChatRequest;
 
 
 #[derive(Debug, Serialize)]

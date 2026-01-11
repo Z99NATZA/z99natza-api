@@ -1,6 +1,6 @@
-use crate::modules::chat::domain::chat::Chat;
-use crate::modules::chat::domain::error::ChatError;
-use crate::modules::chat::domain::value::ChatId;
+use crate::modules::ai_chat::domain::chat::Chat;
+use crate::modules::ai_chat::domain::error::ChatError;
+use crate::modules::ai_chat::domain::value::ChatId;
 
 #[async_trait::async_trait]
 pub trait ChatRepository: Send + Sync {

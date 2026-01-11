@@ -1,9 +1,9 @@
 use std::path::{PathBuf};
 
-use crate::modules::chat::domain::ChatRepository;
-use crate::modules::chat::domain::Chat;
-use crate::modules::chat::domain::ChatError;
-use crate::modules::chat::domain::value::ChatId;
+use crate::modules::ai_chat::domain::ChatRepository;
+use crate::modules::ai_chat::domain::Chat;
+use crate::modules::ai_chat::domain::ChatError;
+use crate::modules::ai_chat::domain::value::ChatId;
 
 pub struct JsonChatRepository {
     base_path: PathBuf,

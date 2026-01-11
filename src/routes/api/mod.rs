@@ -9,7 +9,7 @@ use hyper::body::{Incoming};
 use crate::app::AppResult;
 use crate::app::state::AppState;
 use crate::infra::http::with_cors;
-use crate::modules::chat::transport::http::controller::chat_handler;
+use crate::modules::ai_chat::transport::http::controller::chat_handler;
 use serde_json::json;
 
 pub async fn route(
