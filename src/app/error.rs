@@ -31,6 +31,12 @@ pub enum AppError {
     
     #[error("Hyper error: {0}")]
     HyperError(#[from] hyper::Error),
+    
+    #[error("Resource not found")]
+    NotFound,
+    
+    #[error("Invalid request: {0}")]
+    BadRequest(String),
 }
 
 impl From<Infallible> for AppError {
