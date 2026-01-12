@@ -5,5 +5,4 @@ pub mod prompt;
 pub mod transport;
 pub mod ai;
 pub mod bootstrap;
-
-pub use bootstrap::bootstrap;
+pub mod builder;

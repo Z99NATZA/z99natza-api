@@ -16,7 +16,7 @@ pub async fn chat_handler(
     _state: Arc<AppState>,
     req: Request<Incoming>
 ) -> Result<Response<Full<Bytes>>, AppError> {
-    let ai_chat = Arc::new(ai_chat::bootstrap());
+    let ai_chat = ai_chat::bootstrap::get();
     
     let chat_req: ChatRequest = request::json(req).await?;
     
