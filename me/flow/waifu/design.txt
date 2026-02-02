@@ -1,0 +1,4 @@
+1. Domain -> กฎ
+2. Application -> ขั้นตอน
+3. Infrastructure -> เครื่องมือ
+4. Transport -> ช่องทาง
